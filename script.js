@@ -1,11 +1,6 @@
 // At the beginning of the game, both human and computer score starts at 0
 let humanScore = 0;
 let computerScore = 0;
-let currentRound = 1;
-const totalRound = 5;
-
-const humanChoice = getHumanChoice();
-const computerChoice = getComputerChoice();
 
 // Let the computer randomly select between rock, paper, and scissors
 function getComputerChoice (i) {
@@ -26,29 +21,34 @@ function getHumanChoice () {
 // Write a function that takes human and computer choice as arguments
 function playRound (humanChoice, computerChoice){
     if (humanChoice === computerChoice){
-        "It's a tie! Try again!";
+        return "It's a tie! Try again!";
     } else if (
         (humanChoice === "rock" && computerChoice === "scissors") ||
         (humanChoice === "scissors" && computerChoice === "paper") ||
         (humanChoice === "paper" && computerChoice === "rock")) {
-            `You Win! ${humanChoice} beats ${computerChoice}`;
             humanScore++;
+            return `You Win! ${humanChoice} beats ${computerChoice}`;
     } else {
-        `You Lose! ${computerChoice} beats ${humanChoice}`;
         computerScore++;
+        return `You Lose! ${computerChoice} beats ${humanChoice}`;
     };
-    }
+    }   
 
 function playGame () {
-    if (currentRound >= 0 && currentRound <= 5) {
+    const totalRounds = 5;
 
-        currentRound++;
-        console.log(currentRound +  ":" + totalRound);
-        playRound(humanChoice, computerChoice);
-
-    } else if (currentRound === totalRound) {
-        gameEnds();
+    for (let currentRound = 1; currentRound <= totalRounds; currentRound++){
+        // humanChoice and computerChoice needs to be declared within the loop to be called
+        const humanChoice = getHumanChoice();
+        const computerChoice = getComputerChoice(Math.random(0,1));  
+        
+        const roundResult = playRound(humanChoice,computerChoice);
+        console.log(roundResult);
+        console.log(humanScore + ":" + computerScore);
     }
+
+    const gameResult = gameEnds();
+    console.log(gameResult);
 }
 
 function gameEnds() {
@@ -59,9 +59,7 @@ function gameEnds() {
     } else if (humanScore < computerScore) {
         finalResult = "You lost! Try again next time!"
     }
-
     return finalResult;
 }
 
 playGame();
-console.log(humanScore + ":" + computerScore);
